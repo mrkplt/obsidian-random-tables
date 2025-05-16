@@ -1,0 +1,10 @@
+{
+  "id": "random-table-plugin",
+  "name": "Random Table",
+  "version": "1.0.0",
+  "minAppVersion": "0.12.0",
+  "description": "Insert random entries from structured tables in markdown files",
+  "author": "Your Name",
+  "authorUrl": "https://yourwebsite.com",
+  "main": "src/main.ts"
+}
