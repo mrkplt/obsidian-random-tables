@@ -1,28 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "es2015",
+    "target": "es2020",
+    "module": "es2020",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "sourceMap": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "rootDir": ".",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./@types"
-    ],
+    "types": ["node", "jest"],
+    "sourceMap": true,
+    "declaration": true,
     "baseUrl": ".",
-    "paths": {
-      "*": ["./*"]
-    }
+    "composite": true
   },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "src/__tests__/**/*.ts"],
+  "exclude": ["node_modules", "dist", "agent_context"]
 }

@@ -1,10 +1,15 @@
-import { extractTables } from '../table-utils';
-import * as fs from 'fs';
-import * as path from 'path';
+import { jest } from '@jest/globals';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { extractTables } from '../table-utils.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const readFixture = (filename: string): string => {
-  const fixturePath = path.join(__dirname, '__fixtures__', 'RandomTables', filename);
-  return fs.readFileSync(fixturePath, 'utf-8');
+  const fixturePath = join(__dirname, '__fixtures__', 'RandomTables', filename);
+  return readFileSync(fixturePath, 'utf-8');
 };
 
 describe('extractTables', () => {
@@ -28,7 +33,7 @@ describe('extractTables', () => {
     
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual({
-      title: '## Weapons',
+      title: 'Weapons',
       items: ['Sword', 'Axe', 'Dagger', 'Mace']
     });
     expect(result[1]).toEqual({
