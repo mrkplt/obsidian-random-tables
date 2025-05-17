@@ -1,12 +1,15 @@
 {
-  "name": "random-table-plugin",
+  "name": "random-table",
   "version": "1.0.0",
   "description": "Insert random entries from structured tables in markdown files (Obsidian plugin)",
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "type": "module",
+  "config": {
+    "localPluginPath2": "/Users/mark/Library/Mobile Documents/iCloud~md~obsidian/Documents/Cairn Crawl/.obsidian/plugins/random-tables"
+  },
   "scripts": {
-    "build": "rm -rf dist && tsc && cp src/manifest.json dist && mkdir -p /Users/mark/Library/Mobile\\ Documents/iCloud~md~obsidian/Documents/RPG/.obsidian/plugins/random-table-plugin/ && cp -r dist/* /Users/mark/Library/Mobile\\ Documents/iCloud~md~obsidian/Documents/RPG/.obsidian/plugins/random-table-plugin/",
+    "build": "rm -rf $npm_package_config_localPluginPath2 && rollup -c rollup.config.js && cp src/manifest.json dist && mkdir -p \"$npm_package_config_localPluginPath2\" && cp -r dist/* \"$npm_package_config_localPluginPath2/\"",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "jest": {
@@ -43,12 +46,17 @@
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@types/jest": "^29.5.0",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.17.47",
     "copyfiles": "^2.4.1",
     "jest": "^29.5.0",
     "obsidian": "^1.8.7",
+    "rollup": "^4.40.2",
+    "rollup-plugin-typescript2": "^0.36.0",
     "ts-jest": "^29.1.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.8.3"
   }
 }

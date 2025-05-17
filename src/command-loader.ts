@@ -28,8 +28,8 @@ export class CommandLoader {
       }
 
       const command: Command = {
-        id: `random-tables-insert-${table.title.toLowerCase().replace(/\s+/g, '-')}`,
-        name: `Insert Random ${table.title}`,
+        id: `random-tables-${table.fileName.replace(/\.md/g, '').toLowerCase().replace(/\s+/g, '-')}-${table.title.toLowerCase().replace(/\s+/g, '-')}`,
+        name: `Random Tables: ${table.fileName.replace(/\.md/g, '')} > Insert ${table.title}`,
         callback: async (editor?: Editor) => {
           try {
             if (!table.items || !table.items.length) {

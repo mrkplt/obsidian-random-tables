@@ -1,10 +1,10 @@
 export interface Table {
   title: string;
   items: string[];
-  sourceFile?: string;
+  fileName: string;
 }
 
-export function extractTables(content: string): Table[] {
+export function extractTables(fileName: string, content: string): Table[] {
   // Handle empty content
   if (!content.trim()) {
     return [];
@@ -31,7 +31,7 @@ export function extractTables(content: string): Table[] {
       .filter(Boolean); // Remove empty lines
 
     if (items.length > 0) {
-      tables.push({ title, items });
+      tables.push({ title, items, fileName });
     }
   }
 

@@ -2,7 +2,7 @@ import { Plugin, App, TAbstractFile, TFile } from 'obsidian';
 import { TableLoader } from './table-loader';
 import { CommandLoader } from './command-loader';
 
-export default class RandomTablePlugin extends Plugin {
+export default class RandomTable extends Plugin {
   private tableLoader: TableLoader;
   private commandLoader: CommandLoader;
   private tablesDir = 'RandomTables';
@@ -13,6 +13,8 @@ export default class RandomTablePlugin extends Plugin {
     super(app, manifest);
     this.manifest = manifest;
     this.fileEventHandlers = new Map();
+    this.tableLoader = new TableLoader(this.app, 'RandomTables');
+    this.commandLoader = new CommandLoader(this.app);
   }
 
   async onload() {

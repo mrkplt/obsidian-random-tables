@@ -58,10 +58,10 @@ To reload all tables (e.g., after editing or adding files), use:
 4. Create a symlink to your Obsidian vault's plugins directory:
    ```bash
    # For macOS/Linux:
-   ln -s /path/to/random_table/dist /path/to/your/vault/.obsidian/plugins/random-table-plugin
+   ln -s /path/to/random_table/dist /path/to/your/vault/.obsidian/plugins/random-table
    
    # For Windows:
-   mklink /D "C:\Users\YourName\AppData\Roaming\Obsidian\.obsidian\plugins\random-table-plugin" "/path/to/random_table/dist"
+   mklink /D "C:\Users\YourName\AppData\Roaming\Obsidian\.obsidian\plugins\random-table" "/path/to/random_table/dist"
    ```
 
 ### Testing
@@ -144,3 +144,43 @@ npm test
 - Sample Plugin Repo:  https://github.com/obsidianmd/obsidian-sample-plugin
 - Jest Documentation:  https://jestjs.io/
 - `memfs` Virtual Filesystem:  https://github.com/streamich/memfs
+
+
+```
+1. List All Enabled Plugins
+
+console.log(app.plugins.enabledPlugins);
+
+This logs a Set of plugin IDs that are currently enabled.
+2. Check if a Specific Plugin Is Enabled
+
+app.plugins.enabledPlugins.has("PLUGIN-ID")
+
+Replace PLUGIN-ID with the plugin's id from its manifest.json. For example, if your plugin's manifest.json has:
+
+{
+  "id": "random-table",
+  "name": "Random Table"
+}
+
+Then:
+
+app.plugins.enabledPlugins.has("random-table")
+
+Returns true if enabled.
+3. Get the Plugin Instance
+
+If the plugin is enabled and you want to access its instance (e.g., to call methods or inspect state):
+
+const plugin = app.plugins.plugins["random-table"];
+console.log(plugin);
+
+4. Reload the Plugin from Console
+
+To disable and re-enable a plugin programmatically:
+
+await app.plugins.disablePlugin("random-table");
+await app.plugins.enablePlugin("random-table");
+
+Useful for hot-reloading during development.
+`

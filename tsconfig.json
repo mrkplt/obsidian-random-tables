@@ -4,17 +4,17 @@
     "module": "es2020",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": false,
+    "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "types": ["node", "jest"],
     "sourceMap": true,
     "declaration": true,
     "baseUrl": ".",
     "composite": true
   },
-  "include": ["src/**/*.ts", "src/__tests__/**/*.ts"],
-  "exclude": ["node_modules", "dist", "agent_context"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

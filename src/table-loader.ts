@@ -4,6 +4,7 @@ import { extractTables } from './table-utils';
 export interface Table {
   title: string;
   items: string[];
+  fileName: string;
 }
 
 export class TableLoader {
@@ -54,7 +55,7 @@ export class TableLoader {
   private async loadTablesFromFile(file: TFile): Promise<void> {
     try {
       const content = await this.vault.read(file);
-      const tables = extractTables(content);
+      const tables = extractTables(file.name, content);
       
       // Add source file path to each table
       const tablesWithSource = tables.map(table => ({
