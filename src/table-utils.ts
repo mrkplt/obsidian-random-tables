@@ -21,6 +21,8 @@ export function extractTables(fileName: string, content: string): Table[] {
     // Extract title (remove markdown headers if present)
     let title = lines[0].trim();
     title = title.replace(/^#+\s*/, '').trim();
+
+    fileName = fileName.replace(/\.md/g, '');
     
     // Extract list items (lines starting with - or *)
     const items = lines

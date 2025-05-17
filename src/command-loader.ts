@@ -20,6 +20,7 @@ export class CommandLoader {
     // Clear existing commands first
     await this.unloadCommands();
 
+
     // Register a command for each table
     for (const table of tables) {
       if (!table || !table.title) {
@@ -27,9 +28,11 @@ export class CommandLoader {
         continue;
       }
 
+      const fileNameKey = table.fileName.toLowerCase().replace(/\s+/g, '-');
+      const titleKey = table.title.toLowerCase().replace(/\s+/g, '-');
       const command: Command = {
-        id: `random-tables-${table.fileName.replace(/\.md/g, '').toLowerCase().replace(/\s+/g, '-')}-${table.title.toLowerCase().replace(/\s+/g, '-')}`,
-        name: `Random Tables: ${table.fileName.replace(/\.md/g, '')} > Insert ${table.title}`,
+        id: `random-tables-${fileNameKey}-${titleKey}`,
+        name: `Random Tables: Insert ${table.fileName} > ${table.title}`,
         callback: async (editor?: Editor) => {
           try {
             if (!table.items || !table.items.length) {
@@ -59,12 +62,9 @@ export class CommandLoader {
           }
         },
         editorCallback: (editor: Editor) => {
-          // This will be called when the command is executed from the command palette
-          if (this.registeredCommands.length > 0) {
-            const lastCommand = this.registeredCommands[this.registeredCommands.length - 1];
-            if (lastCommand.callback) {
-              return lastCommand.callback(editor);
-            }
+          // Use the current command's callback
+          if (command.callback) {
+            return command.callback(editor);
           }
         }
       };

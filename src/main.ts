@@ -24,13 +24,6 @@ export default class RandomTable extends Plugin {
     this.tableLoader = new TableLoader(this.app, this.tablesDir);
     this.commandLoader = new CommandLoader(this.app);
 
-    // Register the reload command
-    this.addCommand({
-      id: 'random-table-reload',
-      name: 'Random Table > Reload Tables',
-      callback: () => this.reloadTables()
-    });
-
     // Set up file event listeners
     this.setupFileEventListeners();
 
@@ -65,6 +58,7 @@ export default class RandomTable extends Plugin {
       
       // Register commands for the loaded tables
       const tables = this.tableLoader.getTables();
+      console.log(tables);
       await this.commandLoader.loadCommands(tables);
       
       console.log(`Loaded ${tables.length} tables`);
