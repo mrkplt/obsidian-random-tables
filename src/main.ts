@@ -1,6 +1,14 @@
-import { Plugin, App, TAbstractFile, TFile } from 'obsidian';
+import { Plugin, App, TAbstractFile, TFile, PluginSettingTab, Setting } from 'obsidian';
 import { TableLoader } from './table-loader';
 import { CommandLoader } from './command-loader';
+
+interface RandomTableSettings {
+	mySetting: string;
+}
+
+const DEFAULT_SETTINGS: RandomTableSettings = {
+	mySetting: 'default'
+}
 
 export default class RandomTable extends Plugin {
   private tableLoader: TableLoader;
@@ -8,17 +16,29 @@ export default class RandomTable extends Plugin {
   private tablesDir = 'RandomTables';
   public manifest: any;
   private fileEventHandlers: Map<string, (file: TAbstractFile) => void>;
+  
+  settings: RandomTableSettings;
 
   constructor(app: App, manifest: any) {
     super(app, manifest);
     this.manifest = manifest;
+    this.settings = DEFAULT_SETTINGS;
     this.fileEventHandlers = new Map();
     this.tableLoader = new TableLoader(this.app, 'RandomTables');
     this.commandLoader = new CommandLoader(this.app);
   }
 
+  async loadSettings() {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
+
   async onload() {
     console.log('Loading Random Table plugin');
+    this.addSettingTab(new RandomTableSettingsTab(this.app, this));
 
     // Initialize loaders
     this.tableLoader = new TableLoader(this.app, this.tablesDir);
@@ -82,4 +102,30 @@ export default class RandomTable extends Plugin {
     // Clear event handlers
     this.fileEventHandlers.clear();
   }
+}
+
+class RandomTableSettingsTab extends PluginSettingTab {
+	plugin: RandomTable;
+
+	constructor(app: App, plugin: RandomTable) {
+		super(app, plugin);
+		this.plugin = plugin;
+	}
+
+	display(): void {
+		const {containerEl} = this;
+
+		containerEl.empty();
+
+		new Setting(containerEl)
+			.setName('Setting #1')
+			.setDesc('It\'s a secret')
+			.addText(text => text
+				.setPlaceholder('Enter your secret')
+				.setValue(this.plugin.settings.mySetting)
+				.onChange(async (value) => {
+					this.plugin.settings.mySetting = value;
+					await this.plugin.saveSettings();
+				}));
+	}
 }

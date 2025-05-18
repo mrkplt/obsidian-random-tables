@@ -131,3 +131,7 @@ random_table/
 app.plugins.disablePlugin["random-tables"]
 app.plugins.enablePlugin["random-tables"]
 ```
+
+TO do Features:
+ set directory or directories
+ recursive loading
