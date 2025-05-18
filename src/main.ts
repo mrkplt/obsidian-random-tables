@@ -12,10 +12,13 @@ import { CommandLoader } from './command-loader';
 
 interface RandomTableSettings {
 	folderLocation: string;
+  separatorAfterInsert: 'none' | 'space' | 'newline';
 }
 
 const DEFAULT_SETTINGS: RandomTableSettings = {
-	folderLocation: 'RandomTables'
+	folderLocation: 'RandomTables',
+  separatorAfterInsert: 'none'
+
 }
 
 export default class RandomTable extends Plugin {
@@ -160,6 +163,21 @@ class RandomTableSettingsTab extends PluginSettingTab {
         // Add folder suggestions
         new FolderSuggest(this.app, search.inputEl);
     });
+
+    new Setting(containerEl)
+        .setName('After Insert')
+        .setDesc('Once you have inserted the random selection from a table. RandomTables can add a space or a new line after the inserted value. This may useful for keeping you in the flow.')
+        .addDropdown(dropdown => {
+            dropdown
+                .addOption('none', 'Nothing')
+                .addOption('space', 'Space')
+                .addOption('newline', 'New Line')
+                .setValue(this.plugin.settings.separatorAfterInsert)
+                .onChange(async (value) => {
+                  this.plugin.settings.separatorAfterInsert = value as 'none' | 'space' | 'newline';
+                  await this.plugin.saveSettings();
+                });
+        });
 	}
 
   hide() {
