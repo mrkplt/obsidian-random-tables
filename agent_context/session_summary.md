@@ -20,6 +20,79 @@
 
 ## Session History
 
+### Session 3 (2025-05-18): Settings Implementation (In Progress)
+
+#### Added
+- **3.1**: Settings System Foundation
+  - Added settings tab with dropdown for separator options
+  - Implemented settings persistence using Obsidian's settings API
+  - Created settings interface with default values
+  - Added settings tab UI with dropdown for separator options
+  - Implemented settings persistence between sessions
+
+#### Changed
+- **3.2**: CommandLoader Refactoring
+  - Modified CommandLoader to use a settings getter function
+  - Updated command callbacks to use current settings
+  - Improved settings change handling
+  - Fixed settings initialization in plugin lifecycle
+
+#### Known Issues
+- Settings UI is functional but may need refinement
+- Some edge cases in settings handling may need additional testing
+- Documentation needs to be updated to reflect new settings
+
+### Session 2 (2025-05-17): Core Functionality
+
+#### Added
+- **2.1**: Command System Implementation
+  - Created CommandLoader class for dynamic command registration
+  - Implemented command palette integration
+  - Added support for editor callbacks
+  - Created command unregistration logic
+
+- **2.2**: File Watching System
+  - Added file system watchers for table files
+  - Implemented automatic command regeneration on file changes
+  - Added proper cleanup of event listeners
+  - Implemented debouncing for file change events
+
+- **2.3**: Testing Infrastructure
+  - Added Jest test configuration
+  - Created mock Obsidian environment
+  - Implemented test cases for table parsing
+  - Added integration tests for command registration
+
+#### Changed
+- **2.4**: Table Parsing Improvements
+  - Enhanced table parsing to handle edge cases
+  - Improved error handling for malformed input
+  - Optimized parsing performance
+  - Added support for different list formats
+
+### Session 1 (2025-05-16): Initial Project Setup
+
+#### Added
+- **1.1**: Initial Project Structure - Created basic project layout
+  - Key files/components affected:
+    - `src/main.ts`: Plugin entry point
+    - `src/table-utils.ts`: Table parsing logic
+    - `__tests__/table-utils.test.ts`: Test suite
+    - `mocks/obsidian.ts`: Mock Obsidian API
+  - Implementation details:
+    - TypeScript-based plugin architecture
+    - Jest testing setup
+    - Basic table parsing functionality
+
+#### Changed
+- **1.2**: Project Configuration - Initial setup of package.json
+  - Modifications:
+    - Added TypeScript and Jest dependencies
+    - Configured build and test scripts
+  - Impact:
+    - Enables TypeScript compilation
+    - Sets up testing environment
+
 ### Session 1 (2025-05-16): Initial Project Setup
 
 #### Added

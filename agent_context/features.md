@@ -1,6 +1,12 @@
 # Features
 
 ## Current Features
+- **Settings System** (Partially Implemented):
+  - Configurable separators after insert (space, newline, or none)
+  - Settings tab in Obsidian preferences
+  - Settings persistence between sessions
+
+## Core Features
 - **Table Storage**:
   - Uses both array and dictionary storage for optimal performance
   - Automatic deduplication of tables based on filename and title
@@ -29,6 +35,18 @@
   - Tests for edge cases (empty content, whitespace, etc.)
 
 ## User Experience
+- Settings can be configured through the Obsidian settings panel
+- Changes to settings take effect immediately for new commands
+- Settings are persisted between Obsidian restarts
+
+## Technical Implementation
+- Settings are managed through Obsidian's settings API
+- CommandLoader uses a getter function to always access current settings
+- Settings changes don't require plugin restart
+
+## Known Limitations
+- Settings UI is functional but may change in future versions
+- Some settings may not be fully implemented yet
 - Users create markdown files in the RandomTables/ directory
 - Each file can contain multiple tables separated by `---`
 - Tables can have optional headers or be simple lists

@@ -18,6 +18,10 @@ A powerful Obsidian plugin that turns your markdown lists into random table gene
   - Intuitive command palette integration
   - Clear command naming
   - Automatic table detection
+  - Configurable separators after insert (space, newline, or none)
+
+## ⚠️ Note on Current Development
+This plugin is currently in active development. The settings functionality is partially implemented but not yet fully functional. You can still use all core features, but some settings may not work as expected.
 
 ## 🚀 Quick Start
 
@@ -131,6 +135,3 @@ random_table/
 app.plugins.disablePlugin["random-tables"]
 app.plugins.enablePlugin["random-tables"]
 ```
-
-TODO Features:
- directories (hard maybe)
