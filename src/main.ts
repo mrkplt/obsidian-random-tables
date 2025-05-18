@@ -36,7 +36,7 @@ export default class RandomTable extends Plugin {
     this.settings = DEFAULT_SETTINGS;
     this.fileEventHandlers = new Map();
     this.tableLoader = new TableLoader(this.app, this.settings.folderLocation);
-    this.commandLoader = new CommandLoader(this.app);
+    this.commandLoader = new CommandLoader(this.app, this.settings);
     this.tablesDir = this.settings.folderLocation;
   }
 
@@ -57,7 +57,7 @@ export default class RandomTable extends Plugin {
 
     // Initialize loaders
     this.tableLoader = new TableLoader(this.app, this.settings.folderLocation);
-    this.commandLoader = new CommandLoader(this.app);
+    this.commandLoader = new CommandLoader(this.app, this.settings);
 
     // Initial load of tables
     await this.reloadTables();
@@ -93,12 +93,14 @@ export default class RandomTable extends Plugin {
         this.tablesDir = newFolderLocation;
       }
 
-      // Load tables from files
+      // Reload tables from disk
       await this.tableLoader.loadTables();
-      
-      // Register commands for the loaded tables
       const tables = this.tableLoader.getTables();
-      console.log(tables);
+      
+      // Update command loader with latest settings
+      this.commandLoader = new CommandLoader(this.app, this.settings);
+      
+      // Reload commands with the latest tables
       await this.commandLoader.loadCommands(tables);
       
       console.log(`Loaded ${tables.length} tables`);

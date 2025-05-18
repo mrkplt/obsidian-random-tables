@@ -1,6 +1,11 @@
 import { App, Editor } from 'obsidian';
 import { Table } from './table-loader';
-import { NakedTableName } from './table-utils'
+import { NakedTableName } from './table-utils';
+
+interface RandomTableSettings {
+  folderLocation: string;
+  separatorAfterInsert: 'none' | 'space' | 'newline';
+}
 
 interface Command {
   id: string;
@@ -12,9 +17,11 @@ interface Command {
 export class CommandLoader {
   private app: App;
   private registeredCommands: Command[] = [];
+  private settings: RandomTableSettings;
 
-  constructor(app: App) {
+  constructor(app: App, settings: RandomTableSettings) {
     this.app = app;
+    this.settings = settings;
   }
 
   async loadCommands(tables: Table[]): Promise<void> {
@@ -44,7 +51,14 @@ export class CommandLoader {
           try {
             const randomIndex = Math.floor(Math.random() * table.items.length);
             const randomItem = table.items[randomIndex];
-            const textToInsert = typeof randomItem === 'string' ? randomItem : JSON.stringify(randomItem);
+            let textToInsert = typeof randomItem === 'string' ? randomItem : JSON.stringify(randomItem);
+            
+            // Add the selected separator after the inserted text
+            if (this.settings.separatorAfterInsert === 'space') {
+              textToInsert += ' ';
+            } else if (this.settings.separatorAfterInsert === 'newline') {
+              textToInsert += '\n';
+            }
             
             if (editor) {
               // If we have an editor, insert at cursor
@@ -55,7 +69,7 @@ export class CommandLoader {
               if (activeLeaf?.view.getViewType() === 'markdown') {
                 const view = activeLeaf.view as any;
                 if (view.editor) {
-                  view.editor.replaceSelection(textToInsert);
+view.editor.replaceSelection(textToInsert);
                 }
               }
             }
