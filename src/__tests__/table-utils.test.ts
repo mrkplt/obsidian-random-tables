@@ -126,4 +126,29 @@ Potions
       items: ['Sword', 'Axe', 'Dagger', 'Mace']
     });
   });
+
+  it('should handle a multiple naked list', () => {
+    const content = `- Sword
+- Axe
+- Dagger
+- Mace
+---
+- Leather
+- Chainmail
+- Plate`;
+    const result = extractTables('multiple-naked.md', content);
+    
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual({
+      fileName: 'multiple-naked',
+      title: 'RTNakedList',
+      items: ['Sword', 'Axe', 'Dagger', 'Mace']
+    });
+    expect(result[1]).toEqual({
+      fileName: 'multiple-naked',
+      title: 'RTNakedList',
+      items: ['Leather', 'Chainmail', 'Plate']
+    });
+
+  });
 });
