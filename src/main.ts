@@ -123,34 +123,51 @@ export default class RandomTable extends Plugin {
 
 class RandomTableSettingsTab extends PluginSettingTab {
 	plugin: RandomTable;
+  private debounceTimeout: number | null = null;
 
 	constructor(app: App, plugin: RandomTable) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
 
+  private debouncedOnChange = (value: string) => {
+    if (this.debounceTimeout !== null) {
+        clearTimeout(this.debounceTimeout);
+    }
+    
+    this.debounceTimeout = window.setTimeout(async () => {
+        this.plugin.settings.folderLocation = value;
+        await this.plugin.saveSettings();
+        await this.plugin.reloadTables(value);
+        this.debounceTimeout = null;
+    }, 750);
+};
+
 	display(): void {
 		const {containerEl} = this;
 		containerEl.empty();
       
     new Setting(containerEl)
-    .setName('Folder location')
+    .setName('Folder Location')
     .setDesc('Choose the location where your random tables are stored. By default, this is `RandomTables` in the root of your vault. If you rename your folder, you will need to change this setting.')
     .addSearch(search => {
         search.inputEl.parentElement!.style.minWidth = '165px';
         search
           .setPlaceholder('Example: folder1/folder2')
           .setValue(this.plugin.settings.folderLocation)
-          .onChange(async (value) => {
-            this.plugin.settings.folderLocation = value;
-            await this.plugin.saveSettings();
-            await this.plugin.reloadTables(value);
-          });
+          .onChange(this.debouncedOnChange);
 
         // Add folder suggestions
         new FolderSuggest(this.app, search.inputEl);
     });
 	}
+
+  hide() {
+    if (this.debounceTimeout) {
+        clearTimeout(this.debounceTimeout);
+        this.debounceTimeout = null;
+    }
+  }
 }
 
 class FolderSuggest extends AbstractInputSuggest<string> {
