@@ -1,13 +1,21 @@
-import { Plugin, App, TAbstractFile, TFile, PluginSettingTab, Setting } from 'obsidian';
+import { 
+  Plugin, 
+  App, 
+  TAbstractFile, 
+  TFile, 
+  PluginSettingTab, 
+  Setting, 
+  AbstractInputSuggest
+} from 'obsidian';
 import { TableLoader } from './table-loader';
 import { CommandLoader } from './command-loader';
 
 interface RandomTableSettings {
-	mySetting: string;
+	folderLocation: string;
 }
 
 const DEFAULT_SETTINGS: RandomTableSettings = {
-	mySetting: 'default'
+	folderLocation: 'RandomTables'
 }
 
 export default class RandomTable extends Plugin {
@@ -116,16 +124,51 @@ class RandomTableSettingsTab extends PluginSettingTab {
 		const {containerEl} = this;
 
 		containerEl.empty();
+      
+    new Setting(containerEl)
+    .setName('Folder location')
+    .setDesc('Choose a folder.')
+    .addSearch(search => {
+        search
+          .setPlaceholder('Example: folder1/folder2')
+          .setValue(this.plugin.settings.folderLocation)
+          .onChange(async (value) => {
+            this.plugin.settings.folderLocation = value;
+            await this.plugin.saveSettings();
+          });
 
-		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
-				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
-				}));
+        // Add folder suggestions
+        new FolderSuggest(this.app, search.inputEl);
+    });
 	}
+}
+
+class FolderSuggest extends AbstractInputSuggest<string> {
+  private folders: string[];
+  private inputEl: HTMLInputElement;
+  
+  constructor(app: App, inputEl: HTMLInputElement) {
+      super(app, inputEl);
+      // Get all folders and include root folder
+      this.folders = ["/"].concat(this.app.vault.getAllFolders().map(folder => folder.path));
+      this.inputEl = inputEl;
+  }
+
+  getSuggestions(inputStr: string): string[] {
+      const inputLower = inputStr.toLowerCase();
+      return this.folders.filter(folder => 
+          folder.toLowerCase().includes(inputLower)
+      );
+  }
+
+  renderSuggestion(folder: string, el: HTMLElement): void {
+      el.createEl("div", { text: folder });
+  }
+
+  selectSuggestion(folder: string): void {
+      this.inputEl.value = folder;
+      const event = new Event('input');
+      this.inputEl.dispatchEvent(event);
+      this.close();
+  }
 }
