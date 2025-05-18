@@ -24,7 +24,7 @@ export class CommandLoader {
 
     // Register a command for each table
     for (const table of tables) {
-      if (!table || !table.title) {
+      if (!table || !table.title || !table.items || table.items.length === 0 || !table.fileName) {
         console.warn('Skipping invalid table:', table);
         continue;
       }
@@ -42,11 +42,6 @@ export class CommandLoader {
         name: name,
         callback: async (editor?: Editor) => {
           try {
-            if (!table.items || !table.items.length) {
-              console.warn(`Table ${table.title} has no items`);
-              return;
-            }
-            
             const randomIndex = Math.floor(Math.random() * table.items.length);
             const randomItem = table.items[randomIndex];
             const textToInsert = typeof randomItem === 'string' ? randomItem : JSON.stringify(randomItem);
