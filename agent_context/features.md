@@ -2,9 +2,20 @@
 
 ## Current Features
 - **Settings System** (Partially Implemented):
-  - Configurable separators after insert (space, newline, or none)
-  - Settings tab in Obsidian preferences
-  - Settings persistence between sessions
+  - **Folder Selection**:
+    - Customizable folder location for table files (default: 'RandomTables')
+    - Real-time folder validation and feedback
+    - Automatic reload when folder location changes
+  - **Insert Behavior**:
+    - Dropdown to select separator after insert (none/space/newline)
+    - Changes apply to new commands immediately
+    - implementation incomplete
+  - **Performance**:
+    - Debounced file system operations (750ms)
+    - Efficient updates to prevent UI blocking
+  - **Persistence**:
+    - Settings saved between Obsidian sessions
+    - Automatic migration of existing settings
 
 ## Core Features
 - **Table Storage**:
@@ -40,13 +51,30 @@
 - Settings are persisted between Obsidian restarts
 
 ## Technical Implementation
-- Settings are managed through Obsidian's settings API
-- CommandLoader uses a getter function to always access current settings
-- Settings changes don't require plugin restart
+- **Settings Management**:
+  - Uses Obsidian's settings API for persistence
+  - Type-safe settings interface with defaults
+  - Automatic settings migration when structure changes
+- **Performance Optimizations**:
+  - 750ms debounce on folder input to prevent excessive reloads
+  - Efficient file watching with proper cleanup
+  - Lazy loading of settings where possible
+- **UI/UX**:
+  - Dropdown for separator selection
+  - Folder input with auto-complete
+  - Immediate visual feedback for settings changes
 
 ## Known Limitations
-- Settings UI is functional but may change in future versions
-- Some settings may not be fully implemented yet
+- **Folder Selection**:
+  - Changing folders doesn't automatically move existing files
+  - No recursive folder scanning (flat structure only)
+- **Performance**:
+  - Large numbers of tables may cause slight UI delays
+  - Debounce delay (750ms) is fixed
+- **UI/UX**:
+  - Settings UI is functional but may be refined
+  - Limited validation for folder names
+  - No visual indicator during folder scanning
 - Users create markdown files in the RandomTables/ directory
 - Each file can contain multiple tables separated by `---`
 - Tables can have optional headers or be simple lists

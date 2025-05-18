@@ -24,23 +24,41 @@
 
 #### Added
 - **3.1**: Settings System Foundation
-  - Added settings tab with dropdown for separator options
+  - **Folder Selection**:
+    - Added folder input field with auto-complete
+    - Implemented real-time folder validation
+    - Added automatic reload when folder changes
+  - **Insert Behavior**:
+    - Added dropdown for separator selection (none/space/newline)
+      - implementation incomplete
+    - Implemented immediate application of separator changes
+  - **Performance**:
+    - Added 750ms debounce to folder input
+    - Implemented efficient file watching with debounced reloads
+  - **Persistence**:
+    - Integrated with Obsidian's settings API
+    - Added automatic settings migration
+    - Implemented default values and type safety
+      - Added settings tab with dropdown for separator options
   - Implemented settings persistence using Obsidian's settings API
   - Created settings interface with default values
   - Added settings tab UI with dropdown for separator options
   - Implemented settings persistence between sessions
 
 #### Changed
-- **3.2**: CommandLoader Refactoring
-  - Modified CommandLoader to use a settings getter function
-  - Updated command callbacks to use current settings
-  - Improved settings change handling
-  - Fixed settings initialization in plugin lifecycle
+- **3.2**: Architecture Improvements
+  - **CommandLoader**:
 
-#### Known Issues
-- Settings UI is functional but may need refinement
-- Some edge cases in settings handling may need additional testing
-- Documentation needs to be updated to reflect new settings
+    - Updated command callbacks to use current settings
+    - Improved settings change handling
+  - **Settings Management**:
+    - Centralized settings access
+    - Added type safety for settings
+    - Improved error handling for invalid settings
+  - **Performance**:
+    - Optimized folder change handling
+    - Reduced unnecessary re-renders
+    - Improved cleanup of file watchers
 
 ### Session 2 (2025-05-17): Core Functionality
 
