@@ -90,6 +90,40 @@
   - Added test coverage for markdown file parsing
   - Implemented proper test cleanup
 
+---
+
+### Session 3 (2025-05-17): Codebase Review and Documentation Update
+
+#### Added
+- **3.1**: File Watching
+  - Implemented automatic reloading of tables on file changes
+  - Added proper cleanup of event listeners
+
+- **3.2**: Enhanced Table Parsing
+  - Added support for numbered lists
+  - Improved handling of naked lists
+  - Better whitespace handling
+
+#### Changed
+- **3.3**: Command Naming
+  - Improved command naming for better UX
+  - Special handling for naked lists
+
+- **3.4**: Code Organization
+  - Separated concerns into TableLoader and CommandLoader
+  - Improved type safety throughout the codebase
+
+#### Fixed
+- **3.5**: Memory Management
+  - Fixed potential memory leaks in event listeners
+  - Improved cleanup on plugin unload
+
+#### Testing
+- **3.6**: Test Coverage
+  - Added comprehensive tests for table parsing
+  - Included fixture-based testing
+  - Improved test reliability
+
 ## Reference
 
 ### Key Commands/Shortcuts

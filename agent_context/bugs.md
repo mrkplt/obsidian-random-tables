@@ -1,5 +1,17 @@
 # Bug Reports
 
+## Open Issues
+
+### ENH-001: Expose Dictionary Functionality (2025-05-17)
+- **Status**: Open
+- **Priority**: Medium
+- **Description**: The TableLoader currently uses a dictionary internally but doesn't expose this functionality through its public API
+- **Planned Changes**:
+  - Add `getTable(key: string): Table | undefined` method
+  - Add `getTableKeys(): string[]` method
+  - Update documentation to reflect the new API
+  - Add tests for dictionary functionality
+
 ### BUG-001: Missing Context Files (2025-05-16)
 
 #### Context
@@ -38,3 +50,21 @@
 #### Solution Status: Identified (2025-05-16)
 - Current status: Identified but not fixed
 - Requires explicit user approval to proceed
+
+### BUG-002: Large Number of Tables Impact Performance
+- **Status**: Open
+- **Priority**: Low
+- **Description**: With many tables, command registration might become slow
+- **Workaround**: Organize tables into separate files
+
+## Resolved Issues
+
+### BUG-003: Commands Not Updating on File Changes
+- **Status**: Fixed (2025-05-17)
+- **Resolution**: Implemented proper file watching and command reloading
+- **Commit**: [commit-hash]
+
+### BUG-004: Memory Leaks in Event Listeners
+- **Status**: Fixed (2025-05-17)
+- **Resolution**: Added proper cleanup in unload methods
+- **Commit**: [commit-hash]
