@@ -21,9 +21,9 @@ const DEFAULT_SETTINGS: RandomTableSettings = {
 export default class RandomTable extends Plugin {
   private tableLoader: TableLoader;
   private commandLoader: CommandLoader;
-  private tablesDir = 'RandomTables';
   public manifest: any;
   private fileEventHandlers: Map<string, (file: TAbstractFile) => void>;
+  private tablesDir = DEFAULT_SETTINGS.folderLocation;
   
   settings: RandomTableSettings;
 
@@ -32,36 +32,40 @@ export default class RandomTable extends Plugin {
     this.manifest = manifest;
     this.settings = DEFAULT_SETTINGS;
     this.fileEventHandlers = new Map();
-    this.tableLoader = new TableLoader(this.app, 'RandomTables');
+    this.tableLoader = new TableLoader(this.app, this.settings.folderLocation);
     this.commandLoader = new CommandLoader(this.app);
+    this.tablesDir = this.settings.folderLocation;
   }
 
   async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
+    this.tablesDir = this.settings.folderLocation;
+  }
 
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
 
   async onload() {
+    await this.loadSettings();
+
     console.log('Loading Random Table plugin');
     this.addSettingTab(new RandomTableSettingsTab(this.app, this));
 
     // Initialize loaders
-    this.tableLoader = new TableLoader(this.app, this.tablesDir);
+    this.tableLoader = new TableLoader(this.app, this.settings.folderLocation);
     this.commandLoader = new CommandLoader(this.app);
-
-    // Set up file event listeners
-    this.setupFileEventListeners();
 
     // Initial load of tables
     await this.reloadTables();
+
+    // Set up file event listeners
+    this.setupFileEventListeners();
   }
 
   private setupFileEventListeners() {
     const handleFileEvent = (file: TAbstractFile) => {
-      if (file instanceof TFile && file.path.startsWith(this.tablesDir)) {
+      if (file instanceof TFile && file.path.startsWith(this.settings.folderLocation)) {
         this.reloadTables();
       }
     };
@@ -77,10 +81,15 @@ export default class RandomTable extends Plugin {
     });
   }
 
-  async reloadTables() {
+  async reloadTables(newFolderLocation?: string) {
     try {
       console.log('Reloading random tables...');
-      
+
+      if (newFolderLocation) {
+        this.tableLoader = new TableLoader(this.app, newFolderLocation);
+        this.tablesDir = newFolderLocation;
+      }
+
       // Load tables from files
       await this.tableLoader.loadTables();
       
@@ -122,7 +131,6 @@ class RandomTableSettingsTab extends PluginSettingTab {
 
 	display(): void {
 		const {containerEl} = this;
-
 		containerEl.empty();
       
     new Setting(containerEl)
@@ -135,6 +143,7 @@ class RandomTableSettingsTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.folderLocation = value;
             await this.plugin.saveSettings();
+            await this.plugin.reloadTables(value);
           });
 
         // Add folder suggestions
