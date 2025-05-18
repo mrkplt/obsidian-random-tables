@@ -135,7 +135,7 @@ class RandomTableSettingsTab extends PluginSettingTab {
       
     new Setting(containerEl)
     .setName('Folder location')
-    .setDesc('Choose a folder.')
+    .setDesc('Choose the location where your random tables are stored. By default, this is `RandomTables` in the root of your vault. If you rename your folder, you will need to change this setting.')
     .addSearch(search => {
         search
           .setPlaceholder('Example: folder1/folder2')
