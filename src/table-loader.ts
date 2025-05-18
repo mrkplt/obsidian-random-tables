@@ -11,31 +11,36 @@ export class TableLoader {
   private vault: Vault;
   private tablesDir: string;
   private tables: Table[] = [];
+  private tablesMap: Record<string, Table> = {};
   private eventListeners: (() => void)[] = [];
+  private isInitialized = false;
 
   constructor(app: App, tablesDir: string) {
     this.vault = app.vault;
-    this.tablesDir = tablesDir;
+    this.tablesDir = tablesDir.endsWith('/') ? tablesDir : `${tablesDir}/`;
   }
 
   async loadTables(): Promise<void> {
     try {
       // Clear existing tables
       this.tables = [];
+      this.tablesMap = {};
 
       // Get all markdown files in the tables directory
       const files = this.vault.getMarkdownFiles().filter(file => 
         file.path.startsWith(this.tablesDir) && 
-        file.extension === 'md'
+        file.extension === 'md' &&
+        !file.path.includes('/.trash/') // Skip files in trash
       );
 
       // Load tables from each file
-      for (const file of files) {
-        await this.loadTablesFromFile(file);
-      }
+      await Promise.all(files.map(file => this.loadTablesFromFile(file)));
 
-      // Set up file watchers
-      this.setupFileWatchers();
+      // Set up file watchers on first load
+      if (!this.isInitialized) {
+        this.setupFileWatchers();
+        this.isInitialized = true;
+      }
     } catch (error) {
       console.error('Error loading tables:', error);
       throw error;
@@ -57,13 +62,22 @@ export class TableLoader {
       const content = await this.vault.read(file);
       const tables = extractTables(file.name, content);
       
-      // Add source file path to each table
-      const tablesWithSource = tables.map(table => ({
-        ...table,
-        sourceFile: file.path
-      }));
+      // Add source file path to each table and update both array and map
+      tables.forEach(table => {
+        const tableWithSource = {
+          ...table,
+          sourceFile: file.path
+        };
+        
+        // Generate a unique key for the table
+        const tableKey = `${file.name}:${table.title}`.toLowerCase();
+        
+        // Update the map
+        this.tablesMap[tableKey] = tableWithSource;
+      });
       
-      this.tables.push(...tablesWithSource);
+      // Rebuild the array from the map to ensure consistency
+      this.tables = Object.values(this.tablesMap);
     } catch (error) {
       console.error(`Error loading tables from ${file.path}:`, error);
       throw error;

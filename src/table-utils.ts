@@ -4,6 +4,8 @@ export interface Table {
   fileName: string;
 }
 
+export const NakedTableName = 'RTNakedList';
+
 export function extractTables(fileName: string, content: string): Table[] {
   // Handle empty content
   if (!content.trim()) {
@@ -18,18 +20,24 @@ export function extractTables(fileName: string, content: string): Table[] {
     const lines = section.trim().split(/\r?\n/);
     if (lines.length < 2) continue;
 
-    // Extract title (remove markdown headers if present)
-    let title = lines[0].trim();
-    title = title.replace(/^#+\s*/, '').trim();
-
     fileName = fileName.replace(/\.md/g, '');
-    
+    let title;
+
+    const isListFile = lines[0].match(/^(?:\d+\.|[*-])\s/)
+
+    if (isListFile) {
+      title = NakedTableName
+    } else {
+      title = lines[0].trim();
+      title = title.replace(/^#+\s*/, '').trim();
+    }
+
     // Extract list items (lines starting with - or *)
     const items = lines
-      .slice(1) // Skip the title line
+      .filter((_, index) => isListFile || index != 0)
       .map(line => line.trim())
-      .filter(line => line.match(/^[-*]\s+/)) // Only lines that start with - or *
-      .map(line => line.replace(/^[-*]\s*/, '').trim()) // Remove the bullet point
+      .filter(line => line.match(/^(?:\d+\.|[*-])\s/))
+      .map(line => line.replace(/^(?:\d+\.|[*-])\s*/, '').trim())
       .filter(Boolean); // Remove empty lines
 
     if (items.length > 0) {

@@ -1,5 +1,6 @@
 import { App, Editor } from 'obsidian';
 import { Table } from './table-loader';
+import { NakedTableName } from './table-utils'
 
 interface Command {
   id: string;
@@ -30,9 +31,15 @@ export class CommandLoader {
 
       const fileNameKey = table.fileName.toLowerCase().replace(/\s+/g, '-');
       const titleKey = table.title.toLowerCase().replace(/\s+/g, '-');
+      const id = `random-tables-${fileNameKey}-${titleKey}`;
+
+      const name = table.title == NakedTableName ? 
+        `Random Tables: Insert ${table.fileName}` : 
+        `Random Tables: Insert ${table.fileName} > ${table.title}`;
+
       const command: Command = {
-        id: `random-tables-${fileNameKey}-${titleKey}`,
-        name: `Random Tables: Insert ${table.fileName} > ${table.title}`,
+        id: id,
+        name: name,
         callback: async (editor?: Editor) => {
           try {
             if (!table.items || !table.items.length) {
