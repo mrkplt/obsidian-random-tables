@@ -20,7 +20,22 @@
 
 ## Session History
 
-### Session 3 (2025-05-18): Settings Implementation (In Progress)
+### Session 4 (2025-05-18): Last Character Feature Implementation
+
+#### Added
+- **4.1**: Last Character Feature
+  - **CommandLoader Updates**:
+    - Added settings parameter to constructor
+    - Implemented separator insertion logic
+    - Added support for 'none', 'space', and 'newline' separators
+  - **Main Plugin**:
+    - Updated CommandLoader initialization with settings
+    - Ensured proper settings propagation on reload
+  - **Type Safety**:
+    - Added proper type definitions for settings
+    - Ensured consistent settings interface across components
+
+### Session 3 (2025-05-18): Settings Implementation (Complete)
 
 #### Added
 - **3.1**: Settings System Foundation
@@ -30,7 +45,6 @@
     - Added automatic reload when folder changes
   - **Insert Behavior**:
     - Added dropdown for separator selection (none/space/newline)
-      - implementation incomplete
     - Implemented immediate application of separator changes
   - **Performance**:
     - Added 750ms debounce to folder input

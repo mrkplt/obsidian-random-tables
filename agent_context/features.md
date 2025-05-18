@@ -9,7 +9,10 @@
   - **Insert Behavior**:
     - Dropdown to select separator after insert (none/space/newline)
     - Changes apply to new commands immediately
-    - implementation incomplete
+    - Supports three separator options:
+      - None: Inserts only the random item
+      - Space: Adds a space after the item
+      - New Line: Adds a new line after the item
   - **Performance**:
     - Debounced file system operations (750ms)
     - Efficient updates to prevent UI blocking

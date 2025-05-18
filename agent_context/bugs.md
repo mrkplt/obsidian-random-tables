@@ -1,5 +1,20 @@
 # Bug Reports
 
+## Recently Resolved
+
+### FEAT-001: Last Character Separator (2025-05-18)
+- **Status**: Resolved
+- **Priority**: High
+- **Description**: Implemented the ability to add a separator (none/space/newline) after inserted random text
+- **Changes Made**:
+  - Updated CommandLoader to accept and use settings
+  - Added separator insertion logic in command callbacks
+  - Ensured proper settings propagation on reload
+- **Verification**:
+  - Tested all three separator options
+  - Verified settings persistence
+  - Confirmed immediate application of changes
+
 ## Open Issues
 
 ### ENH-001: Expose Dictionary Functionality (2025-05-17)
