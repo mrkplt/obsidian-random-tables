@@ -66,13 +66,13 @@
 - Current status: Identified but not fixed
 - Requires explicit user approval to proceed
 
+## Resolved Issues
+
 ### BUG-002: Large Number of Tables Impact Performance
-- **Status**: Open
+- **Status**: Won't Fix
 - **Priority**: Low
 - **Description**: With many tables, command registration might become slow
 - **Workaround**: Organize tables into separate files
-
-## Resolved Issues
 
 ### BUG-003: Commands Not Updating on File Changes
 - **Status**: Fixed (2025-05-17)
