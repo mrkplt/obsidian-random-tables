@@ -2,7 +2,7 @@
 
 An Obsidian plugin that transforms markdown lists into random generators, the way a table works in a ttrpg. When you choose the list from the command pallete a random entry from the it is inserted at the cursor position. Updating a list will cause it to be reloaded. Adding a new list will cause a new command to be registered.
 
-![Plugin Overview](./docs/images/overview.png)
+![Plugin Overview](https://github.com/mrkplt/obsidian-random-tables/blob/master/docs/images/overview.png?raw=true)
 
 ## 🚀 Quick Start
 
@@ -39,7 +39,7 @@ Customize the plugin behavior through Obsidian's settings panel:
   - New Line: Add a new line after the item
 
 
-![Plugin Settings](./docs/images/settings.png)
+![Plugin Settings](https://github.com/mrkplt/obsidian-random-tables/blob/master/docs/images/settings.png?raw=true)
 
 ## ✨ Feature Overview
 - **Table Formats**:
