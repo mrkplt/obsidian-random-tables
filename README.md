@@ -2,18 +2,7 @@
 
 An Obsidian plugin that transforms markdown lists into random generators, the way a table works in a ttrpg. When you choose the list from the command pallete a random entry from the it is inserted at the cursor position. Updating a list will cause it to be reloaded. Adding a new list will cause a new command to be registered.
 
-## ✨ Feature Overview
-- **Table Formats**:
-  - Simple bullet/numbered lists with automatic naming
-  - Sectioned tables with custom headers
-  - Multiple tables per file using `---` separators
-  - Support for both ordered and unordered lists
-
-- **Runtime Features**:
-  - Real-time file system change listeners
-  - Dynamic command registration/unregistration
-  - Configurable after text insertion behavior (none/space/newline)
-  - Configurable source folder location
+![Plugin Overview](./docs/images/overview.png)
 
 ## 🚀 Quick Start
 
@@ -38,6 +27,32 @@ To get started, create markdown files in your `RandomTables` directory with your
   - Plate
   - Leather
   ```
+
+## ⚙️ Configuration
+
+Customize the plugin behavior through Obsidian's settings panel:
+
+- **Folder Location**: Specify custom directory for lists
+- **Insert Behavior**:
+  - None: Insert only the selected item
+  - Space: Add a space after the item
+  - New Line: Add a new line after the item
+
+
+![Plugin Settings](./docs/images/settings.png)
+
+## ✨ Feature Overview
+- **Table Formats**:
+  - Simple bullet/numbered lists with automatic naming
+  - Sectioned tables with custom headers
+  - Multiple tables per file using `---` separators
+  - Support for both ordered and unordered lists
+
+- **Runtime Features**:
+  - Real-time file system change listeners
+  - Dynamic command registration/unregistration
+  - Configurable after text insertion behavior (none/space/newline)
+  - Configurable source folder location
 
 ## 📚 List Format Reference
 
@@ -70,16 +85,6 @@ The plugin supports flexible table formats to accommodate different use cases wh
   - Item 2
   - Item 3
   ```
-
-## ⚙️ Configuration
-
-Customize the plugin behavior through Obsidian's settings panel:
-
-- **Folder Location**: Specify custom directory for lists
-- **Insert Behavior**:
-  - None: Insert only the selected item
-  - Space: Add a space after the item
-  - New Line: Add a new line after the item
 
 ## 🛠 Development
 
