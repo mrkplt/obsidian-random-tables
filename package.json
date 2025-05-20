@@ -5,6 +5,7 @@
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "type": "module",
+  "packageManager": "yarn@1.22.22",
   "config": {
     "localPluginPath2": "/Users/mark/Library/Mobile Documents/iCloud~md~obsidian/Documents/Cairn Crawl/.obsidian/plugins/random-tables"
   },
@@ -43,7 +44,7 @@
       "node_modules/(?!obsidian)/"
     ]
   },
-  "author": "Your Name",
+  "author": "Mark Platt",
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
