@@ -1,17 +1,17 @@
 import { 
   Plugin, 
   App, 
-  TAbstractFile, 
   TFile} from 'obsidian';
 import { TableLoader } from './table-loader';
 import { CommandLoader } from './command-loader';
+import { FileWatcher } from './file-watcher';
 import { DEFAULTS, RTSettings, RTSettingsTab, PluginWithSettings } from './settings';
 
 export default class RandomTable extends Plugin implements PluginWithSettings {
   private tableLoader: TableLoader;
   private commandLoader: CommandLoader;
+  private fileWatcher: FileWatcher;
   public manifest: any;
-  private fileEventHandlers: Map<string, (file: TAbstractFile) => void>;
 
   settings: RTSettings;
 
@@ -19,8 +19,8 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
     super(app, manifest);
     this.manifest = manifest;
     this.settings = DEFAULTS;
-    this.fileEventHandlers = new Map();
-    this.tableLoader = new TableLoader(this.app, this.settings.folderLocation);
+    this.fileWatcher = new FileWatcher(this);
+    this.tableLoader = new TableLoader(this, this.app, this.settings.folderLocation);
     this.commandLoader = new CommandLoader(this.app, this.settings);
   }
 
@@ -41,13 +41,17 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
     // Initial load of tables and commands
     await this.reloadTables();
   
-    // Set up file event listeners
-    this.setupFileEventListeners();
+    // Set up file event listener for tables folder
+    this.fileWatcher.addWatchPath(
+      this.settings.folderLocation, 
+      () => this.reloadTables(),
+      'md'
+    );
   }
 
   async reloadTables(newFolderLocation?: string) {
     try {
-      console.log('Reloading random tables...');
+      console.log('Loading random tables...');
   
       // Update folder location if provided
       if (newFolderLocation) {
@@ -55,7 +59,7 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
       }
   
       // Initialize/reinitialize loaders with current settings
-      this.tableLoader = new TableLoader(this.app, this.settings.folderLocation);
+      this.tableLoader = new TableLoader(this, this.app, this.settings.folderLocation);
       this.commandLoader = new CommandLoader(this.app, this.settings);
   
       // Load tables from disk
@@ -71,23 +75,7 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
     }
   }
 
-  private setupFileEventListeners() {
-    const handleFileEvent = (file: TAbstractFile) => {
-      if (file instanceof TFile && file.path.startsWith(this.settings.folderLocation)) {
-        this.reloadTables();
-      }
-    };
 
-    // Store the handler so we can remove it later
-    this.fileEventHandlers.set('modify', handleFileEvent);
-    this.fileEventHandlers.set('create', handleFileEvent);
-    this.fileEventHandlers.set('delete', handleFileEvent);
-
-    // Register the event listeners
-    this.fileEventHandlers.forEach((handler, event) => {
-      this.registerEvent(this.app.vault.on(event as any, handler));
-    });
-  }
 
   onunload() {
     console.log('Unloading Random Table plugin');
@@ -101,7 +89,9 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
       this.commandLoader.unloadCommands();
     }
     
-    // Clear event handlers
-    this.fileEventHandlers.clear();
+    // Clean up file watchers
+    if (this.fileWatcher) {
+      this.fileWatcher.unload();
+    }
   }
 }

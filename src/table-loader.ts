@@ -1,4 +1,4 @@
-import { App, TFile, Vault } from 'obsidian';
+import { App, Plugin, TFile, Vault } from 'obsidian';
 import { extractTables } from './table-utils';
 
 export interface Table {
@@ -12,10 +12,8 @@ export class TableLoader {
   private tablesDir: string;
   private tables: Table[] = [];
   private tablesMap: Record<string, Table> = {};
-  private eventListeners: (() => void)[] = [];
-  private isInitialized = false;
 
-  constructor(app: App, tablesDir: string) {
+  constructor(plugin: Plugin, app: App, tablesDir: string) {
     this.vault = app.vault;
     this.tablesDir = tablesDir.endsWith('/') ? tablesDir : `${tablesDir}/`;
   }
@@ -35,12 +33,7 @@ export class TableLoader {
 
       // Load tables from each file
       await Promise.all(files.map(file => this.loadTablesFromFile(file)));
-
-      // Set up file watchers on first load
-      if (!this.isInitialized) {
-        this.setupFileWatchers();
-        this.isInitialized = true;
-      }
+      
     } catch (error) {
       console.error('Error loading tables:', error);
       throw error;
@@ -52,9 +45,9 @@ export class TableLoader {
   }
 
   unload(): void {
-    // Clean up event listeners
-    this.eventListeners.forEach(remove => remove());
-    this.eventListeners = [];
+    // Clean up resources if needed
+    this.tables = [];
+    this.tablesMap = {};
   }
 
   private async loadTablesFromFile(file: TFile): Promise<void> {
@@ -83,36 +76,4 @@ export class TableLoader {
       throw error;
     }
   }
-
-  private setupFileWatchers(): void {
-    // Watch for file changes
-    const modifyHandler = (file: TFile) => {
-      if (file.path.startsWith(this.tablesDir) && file.extension === 'md') {
-        this.loadTables();
-      }
-    };
-
-    const createHandler = (file: TFile) => {
-      if (file.path.startsWith(this.tablesDir) && file.extension === 'md') {
-        this.loadTables();
-      }
-    };
-
-    const deleteHandler = (file: TFile) => {
-      if (file.path.startsWith(this.tablesDir) && file.extension === 'md') {
-        this.loadTables();
-      }
-    };
-
-    // Register event listeners with proper typing
-    const modifyRef = this.vault.on('modify', modifyHandler as any);
-    const createRef = this.vault.on('create', createHandler as any);
-    const deleteRef = this.vault.on('delete', deleteHandler as any);
-    
-    this.eventListeners.push(
-      () => this.vault.offref(modifyRef),
-      () => this.vault.offref(createRef),
-      () => this.vault.offref(deleteRef)
-    );
-  }
-}
+} 
