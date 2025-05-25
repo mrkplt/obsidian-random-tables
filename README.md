@@ -49,10 +49,17 @@ Customize the plugin behavior through Obsidian's settings panel:
   - Support for both ordered and unordered lists
 
 - **Runtime Features**:
-  - Real-time file system change listeners
-  - Dynamic command registration/unregistration
   - Configurable after text insertion behavior (none/space/newline)
   - Configurable source folder location
+  - Tables and Commands will automatically re/load and update when:
+    - The plugin starts up
+    - You change the tables directory in settings
+    - Any markdown file in your tables directory is modified
+    - Add a new markdown file to the tables directory
+
+You don't need to manually reload the plugin when you make changes to your table files - the changes will be detected automatically!
+
+
 
 ## 📚 List Format Reference
 
@@ -106,7 +113,3 @@ For development reloads, use these commands in the Obsidian console:
 app.plugins.disablePlugin("random-tables")
 app.plugins.enablePlugin("random-tables")
 ```
-
-## 🚨 Important Note
-
-This plugin was developed using Windsurf with extensive LLM assistance. The code has NOT been carefully reviewed, but has been manually tested. Don't expect beauty.

@@ -20,6 +20,27 @@
 
 ## Session History
 
+### Session 5 (2025-05-25): Build System Optimization & TableLoader Refinement
+
+#### Added
+- **5.1**: File-Specific Table Loading
+  - Added support for reloading tables from a specific file
+  - Implemented conditional loading logic in `loadTables(file?: TFile)`
+  - Added proper error handling for file-specific loading
+
+#### Changed
+- **5.2**: Build System Enhancements
+  - Switched from `@rollup/plugin-typescript` to `rollup-plugin-typescript2` for better TypeScript support
+  - Updated Rollup configuration for improved compatibility with TypeScript interfaces
+
+#### Removed
+- **5.3**: Simplified Data Management
+  - Removed `tablesMap` property from TableLoader class
+  - Streamlined table loading process by working directly with arrays
+  - Eliminated redundant code while preserving functionality
+
+---
+
 ### Session 4 (2025-05-18): Last Character Feature Implementation
 
 #### Added

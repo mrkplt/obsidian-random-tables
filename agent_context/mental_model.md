@@ -29,15 +29,14 @@
 
 ## Data Storage
 - **Current Implementation**:
-  - Tables are stored in both an array (`tables`) and a dictionary (`tablesMap`)
-  - The dictionary uses a composite key format: `${fileName}:${tableTitle}` (lowercase)
-  - Only the array is exposed via `getTables()`
-  - The dictionary is used internally to maintain uniqueness and rebuild the array
+  - Tables are stored in a single array (`tables`)
+  - Each table contains a `sourceFile` property tracking the file it originated from
+  - Tables are exposed via the `getTables()` method which returns a copy of the array
 
-- **Planned Enhancement**:
-  - Expose dictionary functionality through the public API
-  - Add methods for direct table lookup by key
-  - Improve table update/delete performance using the dictionary
+- **File-Specific Loading**:
+  - The system can now load tables from a specific file using `loadTables(file: TFile)`
+  - When a specific file is provided, only tables from that file are processed
+  - When no file is specified, all tables from the configured folder are loaded
 
 ## Key Features
 - Random table selection from markdown files in RandomTables/ directory
