@@ -1,4 +1,4 @@
-import { PluginSettingTab, App, Setting, AbstractInputSuggest } from 'obsidian';
+import { PluginSettingTab, App, Setting, AbstractInputSuggest, TFile } from 'obsidian';
 
 export interface RTSettings {
   folderLocation: string;
@@ -12,7 +12,7 @@ export const DEFAULTS: RTSettings = {
 export interface PluginWithSettings {
   settings: RTSettings;
   saveSettings(): Promise<void>;
-  reloadTables(value: string): Promise<void>;
+  reloadTables(object: { newFolderLocation?: string; file?: TFile }): Promise<void>;
 }
 
 export class RTSettingsTab extends PluginSettingTab {
@@ -32,7 +32,7 @@ export class RTSettingsTab extends PluginSettingTab {
     this.debounceTimeout = window.setTimeout(async () => {
       this.plugin.settings.folderLocation = value;
       await this.plugin.saveSettings();
-      await this.plugin.reloadTables(value);
+      await this.plugin.reloadTables({ newFolderLocation: value });
       this.debounceTimeout = null;
     }, 750);
   };

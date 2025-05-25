@@ -44,14 +44,15 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
     // Set up file event listener for tables folder
     this.fileWatcher.addWatchPath(
       this.settings.folderLocation, 
-      () => this.reloadTables(),
+      (file) => this.reloadTables({file: file}),
       'md'
     );
   }
 
-  async reloadTables(newFolderLocation?: string) {
+  async reloadTables({ newFolderLocation, file }: {newFolderLocation?: string, file?: TFile} = {}) {
     try {
       console.log('Loading random tables...');
+      console.log(file);
   
       // Update folder location if provided
       if (newFolderLocation) {
@@ -63,8 +64,9 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
       this.commandLoader = new CommandLoader(this.app, this.settings);
   
       // Load tables from disk
-      await this.tableLoader.loadTables();
+      await this.tableLoader.loadTables(file);
       const tables = this.tableLoader.getTables();
+      console.log(tables);
       
       // Load commands with the tables
       await this.commandLoader.loadCommands(tables);

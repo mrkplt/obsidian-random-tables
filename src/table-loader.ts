@@ -1,42 +1,47 @@
 import { App, Plugin, TFile, Vault } from 'obsidian';
 import { extractTables } from './table-utils';
 
-export interface Table {
+interface Table {
   title: string;
   items: string[];
   fileName: string;
+  sourceFile: string;
 }
 
 export class TableLoader {
   private vault: Vault;
   private tablesDir: string;
   private tables: Table[] = [];
-  private tablesMap: Record<string, Table> = {};
 
   constructor(plugin: Plugin, app: App, tablesDir: string) {
     this.vault = app.vault;
     this.tablesDir = tablesDir.endsWith('/') ? tablesDir : `${tablesDir}/`;
   }
 
-  async loadTables(): Promise<void> {
-    try {
-      // Clear existing tables
-      this.tables = [];
-      this.tablesMap = {};
+  async loadTables(file?: TFile): Promise<void> {
+    if (!file) {
+      try {
+        // Get all markdown files in the tables directory
+        const files = this.vault.getMarkdownFiles().filter(file => 
+          file.path.startsWith(this.tablesDir) && 
+          file.extension === 'md' &&
+          !file.path.includes('/.trash/') // Skip files in trash
+        );
 
-      // Get all markdown files in the tables directory
-      const files = this.vault.getMarkdownFiles().filter(file => 
-        file.path.startsWith(this.tablesDir) && 
-        file.extension === 'md' &&
-        !file.path.includes('/.trash/') // Skip files in trash
-      );
-
-      // Load tables from each file
-      await Promise.all(files.map(file => this.loadTablesFromFile(file)));
-      
-    } catch (error) {
-      console.error('Error loading tables:', error);
-      throw error;
+        // Load tables from each file
+        await Promise.all(files.map(file => this.loadTablesFromFile(file)));
+        
+      } catch (error) {
+        console.error('Error loading tables:', error);
+        throw error;
+      }
+    } else if (file) {
+      try {
+        await this.loadTablesFromFile(file);
+      } catch (error) {
+        console.error(`Error loading tables from ${file.path}:`, error);
+        throw error;
+      }
     }
   }
 
@@ -47,7 +52,6 @@ export class TableLoader {
   unload(): void {
     // Clean up resources if needed
     this.tables = [];
-    this.tablesMap = {};
   }
 
   private async loadTablesFromFile(file: TFile): Promise<void> {
@@ -55,22 +59,14 @@ export class TableLoader {
       const content = await this.vault.read(file);
       const tables = extractTables(file.name, content);
       
-      // Add source file path to each table and update both array and map
-      tables.forEach(table => {
-        const tableWithSource = {
-          ...table,
-          sourceFile: file.path
-        };
-        
-        // Generate a unique key for the table
-        const tableKey = `${file.name}:${table.title}`.toLowerCase();
-        
-        // Update the map
-        this.tablesMap[tableKey] = tableWithSource;
-      });
+      // Add source file path to each table
+      const tablesWithSource = tables.map(table => ({
+        ...table,
+        sourceFile: file.path
+      }));
       
-      // Rebuild the array from the map to ensure consistency
-      this.tables = Object.values(this.tablesMap);
+      // Add to tables array
+      this.tables.push(...tablesWithSource);
     } catch (error) {
       console.error(`Error loading tables from ${file.path}:`, error);
       throw error;

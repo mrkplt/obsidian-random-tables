@@ -1,4 +1,4 @@
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -16,8 +16,7 @@ export default {
     commonjs(),
     typescript({
       tsconfig: './tsconfig.json',
-      sourceMap: true,
-      inlineSources: true
+      useTsconfigDeclarationDir: true
     })
   ]
 };
