@@ -22,6 +22,12 @@
 
 ### Session 6 (2025-05-25): Logging, Lifecycle, and Command Refactor
 
+#### Added
+- **6.6**: Debug Mode Toggle
+  - Added a 'Debug' toggle to the plugin settings panel (settings.ts)
+  - When enabled, debug and some error logs are shown; when disabled, only essential errors are logged
+  - All logging in main.ts and command-loader.ts now respects the debug setting
+
 #### Changed
 - **6.1**: Logging modernization and standardization
   - Migrated from custom log prefixes (Info, Error, etc.) to standard `console.debug`, `console.error`, and related methods

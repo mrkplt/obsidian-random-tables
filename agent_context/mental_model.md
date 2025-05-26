@@ -14,7 +14,9 @@
   - __fixtures__/RandomTables/: Test data
 
 ## Logging Conventions
-- All log messages use a consistent prefix (Info, Error, etc.) for clarity
+- Debug and error logging is now conditional on the plugin's 'Debug' setting (settings.ts)
+- When debug mode is enabled, `console.debug` and some `console.error` logs are active; when disabled, only essential errors are logged
+- Logging modernization: uses standard `console.debug`, `console.error`, etc. instead of custom prefixes
 - Error handling is robust and logs failures without interrupting plugin operation
 
 

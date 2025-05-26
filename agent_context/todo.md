@@ -17,3 +17,5 @@ markdown# Treasure
 ## Minor
 - Potion of Healing
 - +1 {weapons}
+
+TODO: Clean up and extract debug mode logging to a function.
