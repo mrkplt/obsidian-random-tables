@@ -66,17 +66,17 @@ describe('CommandLoader', () => {
       expect(mockApp.commands.addCommand).toHaveBeenCalledTimes(2);
       
       // Get the registered commands
-      const cmd1 = mockCommands.commands['random-tables-weapons-weapons'];
-      const cmd2 = mockCommands.commands['random-tables-armor-rtnakedlist'];
+      const cmd1 = mockCommands.commands['weapons-weapons'];
+      const cmd2 = mockCommands.commands['armor-rtnakedlist'];
       
       expect(cmd1).toBeDefined();
-      expect(cmd1.id).toBe('random-tables-weapons-weapons');
+      expect(cmd1.id).toBe('weapons-weapons');
       expect(cmd1.name).toBe('Random Tables: Insert weapons > Weapons');
       expect(cmd1.callback).toBeInstanceOf(Function);
       expect(cmd1.editorCallback).toBeInstanceOf(Function);
       
       expect(cmd2).toBeDefined();
-      expect(cmd2.id).toBe('random-tables-armor-rtnakedlist');
+      expect(cmd2.id).toBe('armor-rtnakedlist');
       expect(cmd2.name).toBe('Random Tables: Insert armor');
       expect(cmd2.callback).toBeInstanceOf(Function);
       expect(cmd2.editorCallback).toBeInstanceOf(Function);
@@ -107,8 +107,8 @@ describe('CommandLoader', () => {
       await commandLoader.unloadCommands();
       
       expect(mockApp.commands.removeCommand).toHaveBeenCalledTimes(2);
-      expect(mockApp.commands.removeCommand).toHaveBeenCalledWith('random-tables-weapons-weapons');
-      expect(mockApp.commands.removeCommand).toHaveBeenCalledWith('random-tables-armor-rtnakedlist');
+      expect(mockApp.commands.removeCommand).toHaveBeenCalledWith('weapons-weapons');
+      expect(mockApp.commands.removeCommand).toHaveBeenCalledWith('armor-rtnakedlist');
     });
 
     it('should handle errors during command removal', async () => {
@@ -136,7 +136,7 @@ describe('CommandLoader', () => {
       await commandLoader.loadCommands([mockTable1]);
       
       // Get the registered command
-      const command = mockCommands.commands['random-tables-weapons-weapons'];
+      const command = mockCommands.commands['weapons-weapons'];
       expect(command).toBeDefined();
       
       // Reset mock before test
@@ -163,7 +163,7 @@ describe('CommandLoader', () => {
       mockApp.workspace.activeLeaf = mockLeaf;
       
       await commandLoader.loadCommands([mockTable1]);
-      const command = mockCommands.commands['random-tables-weapons-weapons'];
+      const command = mockCommands.commands['weapons-weapons'];
       
       // This should not throw
       await expect(command.callback()).resolves.not.toThrow();
@@ -184,7 +184,7 @@ describe('CommandLoader', () => {
         await commandLoader.loadCommands([invalidTable]);
         
         // The command should not be registered for an invalid table
-        expect(mockCommands.commands['random-tables-weapons-weapons']).toBeUndefined();
+        expect(mockCommands.commands['weapons-weapons']).toBeUndefined();
         
         // Verify the warning was logged
         expect(warnSpy).toHaveBeenCalled();

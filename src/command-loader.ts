@@ -32,13 +32,13 @@ export class CommandLoader {
     // Register a command for each table
     for (const table of tables) {
       if (!table || !table.title || !table.items || table.items.length === 0 || !table.fileName) {
-        console.log(`Info - Skipping invalid table ${table}.`);
+        console.debug(`Skipping invalid table ${table}.`);
         continue;
       }
 
       const fileNameKey = table.fileName.toLowerCase().replace(/\s+/g, '-');
       const titleKey = table.title.toLowerCase().replace(/\s+/g, '-');
-      const id = `random-tables-${fileNameKey}-${titleKey}`;
+      const id = `${fileNameKey}-${titleKey}`;
 
       const name = table.title == NakedTableName ? 
         `Random Tables: Insert ${table.fileName}` : 
@@ -74,7 +74,7 @@ view.editor.replaceSelection(textToInsert);
               }
             }
           } catch (error) {
-            console.log('Error - Failed to execute command.', error);
+            console.error('Failed to execute command.', error);
           }
         },
         editorCallback: (editor: Editor) => {
@@ -108,7 +108,7 @@ view.editor.replaceSelection(textToInsert);
         // @ts-ignore - The Obsidian types don't expose removeCommand, but it exists
         this.app.commands.removeCommand(command.id);
       } catch (error) {
-        console.log(`Error - Failed to unregister command ${command.id}.`, error);
+        console.error(`Failed to unregister command ${command.id}.`, error);
       }
     }
     this.registeredCommands = [];

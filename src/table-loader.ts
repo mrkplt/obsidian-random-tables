@@ -31,14 +31,14 @@ export class TableLoader {
         await Promise.all(files.map(file => this.loadTablesFromFile(file)));
         
       } catch (error) {
-        console.log('Error - Tables failed to load.', error);
+        console.error('Tables failed to load.', error);
         throw error;
       }
     } else if (file) {
       try {
         await this.loadTablesFromFile(file);
       } catch (error) {
-        console.log(`Error - Tables failed to load from ${file.path}.`, error);
+        console.error(`Tables failed to load from ${file.path}.`, error);
         throw error;
       }
     }
@@ -67,7 +67,7 @@ export class TableLoader {
       // Add to tables array
       this.tables.push(...tablesWithSource);
     } catch (error) {
-      console.log(`Error - Tables failed to load from ${file.path}.`, error);
+      console.error(`Tables failed to load from ${file.path}.`, error);
       throw error;
     }
   }

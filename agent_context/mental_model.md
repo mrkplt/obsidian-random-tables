@@ -3,12 +3,20 @@
 ## Architecture Overview
 - TypeScript-based Obsidian plugin
 - Main components:
-  - src/main.ts: Plugin entry point and lifecycle management
+  - src/main.ts: Plugin entry point, lifecycle management, and event wiring
+    - Uses `app.workspace.onLayoutReady` to ensure vault/files are ready before loading tables and setting up file watchers
   - src/table-loader.ts: Handles loading and managing tables from markdown files
   - src/command-loader.ts: Manages dynamic command registration and text insertion
+    - Command IDs now use a simplified format: `${fileNameKey}-${titleKey}` (no prefix)
+    - Commands close over their table data at registration; persistent table state is not needed
   - src/table-utils.ts: Table parsing and utility functions
   - __tests__/: Test files with Jest
   - __fixtures__/RandomTables/: Test data
+
+## Logging Conventions
+- All log messages use a consistent prefix (Info, Error, etc.) for clarity
+- Error handling is robust and logs failures without interrupting plugin operation
+
 
 ## Settings Flow
 1. User updates settings in the Obsidian settings panel
@@ -29,7 +37,9 @@
 
 ## Data Storage
 - **Current Implementation**:
-  - Tables are stored in a single array (`tables`)
+  - Tables are loaded as needed and passed to CommandLoader for command registration
+  - There is no persistent table state outside the reload/registration process
+  - Each command's callback closes over its table data at the time of registration
   - Each table contains a `sourceFile` property tracking the file it originated from
   - Tables are exposed via the `getTables()` method which returns a copy of the array
 

@@ -35,23 +35,25 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
   async onload() {
     await this.loadSettings();
   
-    console.log('Info - Loading plugin.');
+    console.debug('Loading plugin.');
     this.addSettingTab(new RTSettingsTab(this.app, this));
   
     // Initial load of tables and commands
-    await this.reloadTables();
-  
-    // Set up file event listener for tables folder
-    this.fileWatcher.addWatchPath(
-      this.settings.folderLocation, 
-      (file) => this.reloadTables({file: file}),
-      'md'
-    );
+    this.app.workspace.onLayoutReady(async () => {
+      await this.reloadTables();
+    
+      // Set up file event listener for tables folder
+      this.fileWatcher.addWatchPath(
+        this.settings.folderLocation, 
+        (file) => this.reloadTables({file: file}),
+        'md'
+      );
+    });
   }
 
   async reloadTables({ newFolderLocation, file }: {newFolderLocation?: string, file?: TFile} = {}) {
     try {
-      console.log('Info - Loading tables.');
+      console.debug('Loading tables.');
   
       // Update folder location if provided
       if (newFolderLocation) {
@@ -69,16 +71,16 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
       // Load commands with the tables
       await this.commandLoader.loadCommands(tables);
       
-      console.log(`RandoInfo - Loaded ${tables.length} tables.`);
+      console.debug(`Loaded ${tables.length} tables.`);
     } catch (error) {
-      console.log('Error - Failed to reload tables.', error);
+      console.error('Failed to reload tables.', error);
     }
   }
 
 
 
   onunload() {
-    console.log('Info - Unloading Random Table plugin');
+    console.debug('Unloading Random Table plugin');
     
     // Clean up resources
     if (this.tableLoader) {

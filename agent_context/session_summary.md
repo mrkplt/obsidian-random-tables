@@ -20,6 +20,34 @@
 
 ## Session History
 
+### Session 6 (2025-05-25): Logging, Lifecycle, and Command Refactor
+
+#### Changed
+- **6.1**: Logging modernization and standardization
+  - Migrated from custom log prefixes (Info, Error, etc.) to standard `console.debug`, `console.error`, and related methods
+  - Improved clarity and developer experience for log output in main.ts, table-loader.ts, and command-loader.ts
+  - Logging now integrates better with browser and Node.js developer tools
+
+
+- **6.2**: Plugin lifecycle and table loading reliability
+  - Moved initial table loading and file watcher setup into `app.workspace.onLayoutReady` to ensure vault/files are available on startup
+  - Fixes bug where tables would not load on first plugin activation
+
+- **6.3**: Command and table registration
+  - Command IDs simplified (removed `random-tables-` prefix)
+  - All code and tests updated to match new ID format
+  - Clarified that persistent table state is not needed; commands close over table data at registration
+
+- **6.4**: Test and error handling improvements
+  - Enhanced test mocks and assertions for log output and error cases
+  - Improved test reliability for command registration/unregistration
+
+- **6.5**: Documentation and metadata
+  - Updated plugin manifest with accurate description, author, and URL
+  - README improved to clarify auto-reloading, build, and runtime behaviors
+
+---
+
 ### Session 5 (2025-05-25): Build System Optimization & TableLoader Refinement
 
 #### Added

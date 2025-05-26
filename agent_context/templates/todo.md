@@ -1,1 +1,0 @@
-TODO: Recursive folder scanning: Break the flat structure limitation
