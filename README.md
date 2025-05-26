@@ -106,6 +106,14 @@ npm run build
 npm test
 ```
 
+## 📦 Release
+
+tag the release and push it to github. The github action will build the plugin and create a draft release.
+```bash
+git tag -a 1.0.0 -m "1.0.1"
+git push origin 1.0.0
+```
+
 ## 🔍 Troubleshooting
 
 For development reloads, use these commands in the Obsidian console:
