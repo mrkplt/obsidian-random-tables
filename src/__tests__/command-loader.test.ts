@@ -125,11 +125,18 @@ describe('CommandLoader', () => {
 
   describe('command execution', () => {
     let mockEditor: any;
+    let mockApp: any;
+    let commandLoader: CommandLoader;
     
     beforeEach(() => {
-      mockEditor = {
-        replaceSelection: jest.fn()
+      mockEditor = { replaceSelection: jest.fn() };
+      mockApp = {
+        settings: { debug: true },
+        commands: mockCommands,
+        vault: { getMarkdownFiles: jest.fn().mockReturnValue([{ path: 'weapons.md' }, { path: 'armor.md' }]) },
+        workspace: { activeLeaf: { view: { getViewType: () => 'markdown', editor: mockEditor } } }
       };
+      commandLoader = new CommandLoader(mockApp, mockApp.settings);
     });
 
     it('should insert random item when command is executed', async () => {
@@ -177,7 +184,7 @@ describe('CommandLoader', () => {
       };
       
       // Mock console.log to verify the warning is logged
-      const warnSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+      const debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
       
       try {
         // Load the invalid table
@@ -187,16 +194,16 @@ describe('CommandLoader', () => {
         expect(mockCommands.commands['weapons-weapons']).toBeUndefined();
         
         // Verify the warning was logged
-        expect(warnSpy).toHaveBeenCalled();
+        expect(debugSpy).toHaveBeenCalled();
       } finally {
         // Restore console.log
-        warnSpy.mockRestore();
+        debugSpy.mockRestore();
       }
     });
     
     it('should not register commands for invalid tables', async () => {
       // Mock console.log to verify the warning is logged
-      const warnSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+      const debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
       
       try {
         // Load with null table (should be skipped)
@@ -206,10 +213,10 @@ describe('CommandLoader', () => {
         expect(Object.keys(mockCommands.commands)).toHaveLength(0);
         
         // Verify the warning was logged
-        expect(warnSpy).toHaveBeenCalledWith('Info - Skipping invalid table null.');
+        expect(debugSpy).toHaveBeenCalledWith('Skipping invalid table null.');
       } finally {
         // Restore console.   
-        warnSpy.mockRestore();
+        debugSpy.mockRestore();
       }
     });
   });

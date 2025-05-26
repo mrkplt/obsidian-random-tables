@@ -19,3 +19,5 @@ markdown# Treasure
 - +1 {weapons}
 
 TODO: Clean up and extract debug mode logging to a function.
+
+TODO: Now that everything is cleaner, back log in some tests, especially settings.
