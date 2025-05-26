@@ -2,7 +2,6 @@ import { jest } from '@jest/globals';
 import { CommandLoader } from '../command-loader';
 import { Table } from '../table-loader';
 import { NakedTableName } from '../table-utils';
-import { Editor } from 'obsidian';
 
 describe('CommandLoader', () => {
   let mockApp: any;
@@ -11,12 +10,14 @@ describe('CommandLoader', () => {
   
   const mockTable1: Table = {
     fileName: 'weapons',
+    sourceFile: 'weapons.md',
     title: 'Weapons',
     items: ['Sword', 'Axe', 'Dagger']
   };
 
   const mockNakedTable: Table = {
     fileName: 'armor',
+    sourceFile: 'armor.md',
     title: NakedTableName,
     items: ['Leather', 'Chainmail', 'Plate']
   };
@@ -51,7 +52,7 @@ describe('CommandLoader', () => {
       }
     };
 
-    commandLoader = new CommandLoader(mockApp as any);
+    commandLoader = new CommandLoader(mockApp as any, {} as any);
   });
 
   afterEach(() => {
@@ -175,8 +176,8 @@ describe('CommandLoader', () => {
         items: []
       };
       
-      // Mock console.warn to verify the warning is logged
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      // Mock console.log to verify the warning is logged
+      const warnSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
       
       try {
         // Load the invalid table
@@ -188,14 +189,14 @@ describe('CommandLoader', () => {
         // Verify the warning was logged
         expect(warnSpy).toHaveBeenCalled();
       } finally {
-        // Restore console.warn
+        // Restore console.log
         warnSpy.mockRestore();
       }
     });
     
     it('should not register commands for invalid tables', async () => {
-      // Mock console.warn to verify the warning is logged
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      // Mock console.log to verify the warning is logged
+      const warnSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
       
       try {
         // Load with null table (should be skipped)
@@ -205,9 +206,9 @@ describe('CommandLoader', () => {
         expect(Object.keys(mockCommands.commands)).toHaveLength(0);
         
         // Verify the warning was logged
-        expect(warnSpy).toHaveBeenCalledWith('Skipping invalid table:', null);
+        expect(warnSpy).toHaveBeenCalledWith('Info - Skipping invalid table null.');
       } finally {
-        // Restore console.warn
+        // Restore console.   
         warnSpy.mockRestore();
       }
     });

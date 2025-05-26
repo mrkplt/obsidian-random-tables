@@ -32,7 +32,7 @@ export class CommandLoader {
     // Register a command for each table
     for (const table of tables) {
       if (!table || !table.title || !table.items || table.items.length === 0 || !table.fileName) {
-        console.warn('Skipping invalid table:', table);
+        console.log(`Info - Skipping invalid table ${table}.`);
         continue;
       }
 
@@ -74,7 +74,7 @@ view.editor.replaceSelection(textToInsert);
               }
             }
           } catch (error) {
-            console.error('Error executing command:', error);
+            console.log('Error - Failed to execute command.', error);
           }
         },
         editorCallback: (editor: Editor) => {
@@ -101,16 +101,16 @@ view.editor.replaceSelection(textToInsert);
   async unloadCommands(): Promise<void> {
     // Make a copy of the array to avoid modification during iteration
     const commandsToRemove = [...this.registeredCommands];
-    this.registeredCommands = [];
-    
+
     // Unregister all commands
     for (const command of commandsToRemove) {
-      try {
+      try {       
         // @ts-ignore - The Obsidian types don't expose removeCommand, but it exists
         this.app.commands.removeCommand(command.id);
       } catch (error) {
-        console.warn(`Failed to unregister command ${command.id}:`, error);
+        console.log(`Error - Failed to unregister command ${command.id}.`, error);
       }
     }
+    this.registeredCommands = [];
   }
 }

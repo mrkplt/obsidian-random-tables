@@ -1,7 +1,7 @@
 import { App, Plugin, TFile, Vault } from 'obsidian';
 import { extractTables } from './table-utils';
 
-interface Table {
+export interface Table {
   title: string;
   items: string[];
   fileName: string;
@@ -28,18 +28,17 @@ export class TableLoader {
           !file.path.includes('/.trash/') // Skip files in trash
         );
 
-        // Load tables from each file
         await Promise.all(files.map(file => this.loadTablesFromFile(file)));
         
       } catch (error) {
-        console.error('Error loading tables:', error);
+        console.log('Error - Tables failed to load.', error);
         throw error;
       }
     } else if (file) {
       try {
         await this.loadTablesFromFile(file);
       } catch (error) {
-        console.error(`Error loading tables from ${file.path}:`, error);
+        console.log(`Error - Tables failed to load from ${file.path}.`, error);
         throw error;
       }
     }
@@ -68,7 +67,7 @@ export class TableLoader {
       // Add to tables array
       this.tables.push(...tablesWithSource);
     } catch (error) {
-      console.error(`Error loading tables from ${file.path}:`, error);
+      console.log(`Error - Tables failed to load from ${file.path}.`, error);
       throw error;
     }
   }
