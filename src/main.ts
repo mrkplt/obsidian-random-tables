@@ -35,7 +35,7 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
   async onload() {
     await this.loadSettings();
   
-    console.debug('Loading plugin.');
+    if (this.settings.debug) console.debug('Loading plugin.');
     this.addSettingTab(new RTSettingsTab(this.app, this));
   
     // Initial load of tables and commands
@@ -53,7 +53,7 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
 
   async reloadTables({ newFolderLocation, file }: {newFolderLocation?: string, file?: TFile} = {}) {
     try {
-      console.debug('Loading tables.');
+      if (this.settings.debug) console.debug('Loading tables.');
   
       // Update folder location if provided
       if (newFolderLocation) {
@@ -70,8 +70,7 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
       
       // Load commands with the tables
       await this.commandLoader.loadCommands(tables);
-      
-      console.debug(`Loaded ${tables.length} tables.`);
+      if (this.settings.debug) console.debug(`Loaded ${tables.length} tables.`);
     } catch (error) {
       console.error('Failed to reload tables.', error);
     }
@@ -80,7 +79,7 @@ export default class RandomTable extends Plugin implements PluginWithSettings {
 
 
   onunload() {
-    console.debug('Unloading Random Table plugin');
+    if (this.settings.debug) console.debug('Unloading Random Table plugin');
     
     // Clean up resources
     if (this.tableLoader) {

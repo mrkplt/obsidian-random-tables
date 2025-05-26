@@ -3,10 +3,12 @@ import { PluginSettingTab, App, Setting, AbstractInputSuggest, TFile } from 'obs
 export interface RTSettings {
   folderLocation: string;
   separatorAfterInsert: 'none' | 'space' | 'newline';
+  debug: boolean;
 }
 export const DEFAULTS: RTSettings = {
   folderLocation: 'RandomTables',
-  separatorAfterInsert: 'none'
+  separatorAfterInsert: 'none',
+  debug: false
 };
 
 export interface PluginWithSettings {
@@ -68,6 +70,17 @@ export class RTSettingsTab extends PluginSettingTab {
             this.plugin.settings.separatorAfterInsert = value as 'none' | 'space' | 'newline';
             await this.plugin.saveSettings();
           });
+      });
+
+    new Setting(containerEl)
+      .setName('Debug')
+      .setDesc('Enable debug logging')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.settings.debug);
+        toggle.onChange(async (value) => {
+          this.plugin.settings.debug = value;
+          await this.plugin.saveSettings();
+        });
       });
   }
 
