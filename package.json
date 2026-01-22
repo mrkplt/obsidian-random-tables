@@ -10,8 +10,8 @@
     "localPluginPath2": "/Users/mark/Library/Mobile Documents/iCloud~md~obsidian/Documents/Cairn Crawl/.obsidian/plugins/random-tables"
   },
   "scripts": {
-    "local-build": "rm -rf $npm_package_config_localPluginPath2 && rollup -c rollup.config.js && cp src/manifest.json dist && mkdir -p \"$npm_package_config_localPluginPath2\" && cp -r dist/* \"$npm_package_config_localPluginPath2/\"",
-    "build": "rollup -c rollup.config.js && cp src/manifest.json dist",
+    "local-build": "rm -rf $npm_package_config_localPluginPath2 && rollup -c rollup.config.js && cp manifest.json dist && mkdir -p \"$npm_package_config_localPluginPath2\" && cp -r dist/* \"$npm_package_config_localPluginPath2/\"",
+    "build": "rollup -c rollup.config.js && cp manifest.json dist",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "jest": {
