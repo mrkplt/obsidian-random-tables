@@ -5,6 +5,6 @@
   "minAppVersion": "1.8.10",
   "description": "Transform markdown lists into random generators run from the command palette. Perfect for tabletop gaming, creative writing, and brainstorming sessions.",
   "author": "Mark Platt",
-  "authorUrl": "https://github.com/mrkplt/obsidian-random-tables",
-  "main": "main.js"
+  "authorUrl": "https://mrkplt.com",
+  "isDesktopOnly": false
 }
