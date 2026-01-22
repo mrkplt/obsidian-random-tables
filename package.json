@@ -12,7 +12,8 @@
   "scripts": {
     "local-build": "rm -rf $npm_package_config_localPluginPath2 && rollup -c rollup.config.js && cp manifest.json dist && mkdir -p \"$npm_package_config_localPluginPath2\" && cp -r dist/* \"$npm_package_config_localPluginPath2/\"",
     "build": "rollup -c rollup.config.js && cp manifest.json dist",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "ci": "yarn install --frozen-lockfile && yarn build"
   },
   "jest": {
     "preset": "ts-jest/presets/default-esm",
